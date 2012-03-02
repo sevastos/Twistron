@@ -4,178 +4,69 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Twistron3</title>
+  <title>Twistron</title>
+  
+  <!-- 
+     Awesome resources about Touch Events:
+     
+     https://developer.mozilla.org/en/DOM/Touch_events
+     http://www.html5rocks.com/en/mobile/touch/ 
+      
+     Kudos!
+     
+     --by Sev
+      
+  -->
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-  	html,body{height:auto;width:auto;padding:0;margin:0;background-color:#000;color:#fff;overflow:hidden;}
-  	
-  	#main{margin:0 auto;border:1px solid #fff;}
-  	#main ul, #main li {list-style:none;padding:0;margin:0;}
-  	
-  	#main li{
-  		position:absolute;
-		display:block;
-  	}
-  	
-  	.spot{
-  		display:block;
-  		border:1px solid #11C3FC;
-  		box-shadow: 4px 4px 6px #11C3FC, -4px -4px 6px #11C3FC;
-  		border-radius:50%;
-  	}
-  	
-  	
-  	.lines{
-  		display:none;
-		background-color:#11C3FC;
-		height:1px;
-		width:1px;
-		position: absolute;
-		top:0;
-		left:0;
-		opacity:0.6;
-	}
-	
-	.line-x{
-		width:100%;
-	}
-	.line-y{
-		height:100%;		
-	}
-	
-	.line-0{background-color:#11C3FC;}
-	.line-1{background-color:#6711FC;}
-	.line-2{background-color:#FCBD11;}
-	.line-3{background-color:#FC1148;}
-	.line-4{background-color:#11C5FC;}
-	.line-5{background-color:#11FCB9;}
-	.line-6{background-color:#E4FC11;}
-	.line-7{background-color:#FCA611;}
-	.line-8{background-color:#118EFC;}
-	.line-9{background-color:#5F11FC;}
-	.line-10{background-color:#11FC77;}
-	.line-11{background-color:#8311FC;}
-	.line-12{background-color:#FC114C;}
-	.line-13{background-color:#1134FC;}
-	.line-14{background-color:#11FCC9;}
-	.line-15{background-color:#FC1111;}
-	.line-16{background-color:#5411FC;}
-	.line-17{background-color:#92FC11;}
-	.line-18{background-color:#FCE111;}
-	.line-19{background-color:#11FC6B;}
-	.line-20{background-color:#119AFC;}
-	.line-21{background-color:#11C3FC;}
-	.line-22{background-color:#11FCB6;}
-	.line-23{background-color:#AEFC11;}
-  </style>
   
-  
-  
+  <link href='http://fonts.googleapis.com/css?family=Orbitron:700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
   
 </head>
 <body>
+    
+  <div id="msg"></div>
+   
+  <div id="menu">
+      <div id="promo">
+          <h1>Twistron</h1>
+          <em>Twister meets Tron</em>
+          <ul>
+              <li><label>Number of Players:
+                            <select name="players">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                </label></li>
+                <li><label>Feeling lucky punk? <input type="checkbox" name="hardCoreMode" /><br/><small>(Hardcore Mode)</small></label></li>
 
-  <div id="main">
-  	<ul></ul>
+                <li><input type="button" name="start" value="PLAY" /></label></li>
+                
+                <li class="pph-option"><label>Check out a variation of Twistron tailored for my company PeoplePerHour: <input type="checkbox" name="pphmode" /></label></li>
+                <li class="author">By <a href="http://twitter.com/#!/smas">@smas</a></li>
+
+          </ul>
+      </div>
   </div>
+  
+  
+  <div id="main">
+    <ul></ul>
+  </div>
+  
+  <div id="grats">
+      <h1>Congratulations!</h1>
+      <p>You won a round of Twistron!</p>
+      <p class="challenge">Do you dare trying the hardcore mode?<br/><br/>Thought so... muahahaha!</p>
+      <p><a href="index.html" rel="self" target="_self">PLAY AGAIN!</a></p>
+  </div>
+
+  
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="script.js"></script>
 
-  <script>
-  
-  
-  
-	function render(){
-		w = $(window).width();
-  		h = $(window).height();
-  		
-		set = {
-			cols: (w > h ? sets[players]['cols'] : sets[players]['rows']),
-			rows: (w > h ? sets[players]['rows'] : sets[players]['cols'])
-		}; 
-  		
- 		iw = w / (set['cols'] + 1);
-  		ih = h / (set['rows'] + 1);
-  		gutterX = (w - (set['cols'] * iw)) / (set['cols'] + 1);
-  		gutterY = (h - (set['rows'] * ih)) / (set['rows'] + 1);
-  	
-  		
-  		//clear previous
-  		$('#main ul').empty();
-		for(var row = 0; row < set['rows']; row++){
-			for(var col = 0; col < set['cols']; col++){
-				var li = $('<li><div class="spot">' + (row * set['rows'] + col + 1) + '</div></li>');
-				li.css('width', iw);
-				li.css('height', ih);
-				li.css('marginLeft', (gutterX * col) + ((iw * col) - 1));
-				li.css('marginTop', (gutterY * (row + 1)) + ((ih * row) - 1));
-			
-	
-				$('#main ul').append(li);
-			}
-		}
-  		
-  		//spots
-		$('.spot')
-			.css('line-height', ih)
-			.css('height', ih)
-			.css('width', ih)
-			.css('margin-left', Math.abs(iw-ih) / 2);
-  	
-	}
-  
-  var w, h, iw, ih, gutterX, gutterY, set;
-  
-  	var fingers = [];
-  
-  	var players = 1,
-		
-		//no of players :no of slots 
-		sets = {
-			1 : {cols: 3, rows: 3}
-		};
-
-	render();
-	
-	
-	$(window).on('resize',render);
-	
-	$(document).ready(function(){
-		for(var i=0;i < 24;i++){
-			$('body').append('<div id="lineX-'+i+'" class="lines line-x line-'+i+'"></div><div id="lineY-'+i+'" class="lines line-y line-'+i+'"></div>');
-		}
-	});
-	
-	
-	document.body.addEventListener('touchend', function(event) {
-	  $('.lines').hide();
-	  event.preventDefault();
-	}, false);
-		
-			
-	var touches = []
-	document.body.addEventListener('touchmove', function(event) {
-	  touches = event.touches;
-	  event.preventDefault();
-	}, false);
-	
-	// Setup a 60fps timer
-	timer = setInterval(function() {
-	  renderTouches(touches);
-	}, 15);
-	
-	function renderTouches(touches){
-		$('.lines').hide();
-
-		for (var i = 0; i < touches.length; i++) {
-		    var touch = touches[i];
-			$('#lineX-'+i).css('top', touch.pageY).show();
-			$('#lineY-'+i).css('left', touch.pageX).show();
-		}
-	}
-		
-  </script>
 </body>
 </html>
